@@ -44,7 +44,11 @@ async function handleLogin(e) {
       errorBox.style.display = "none";
       showDashboard();
     } else {
-      errorBox.innerText = "❌ Incorrect username or password.";
+      // 🛠️ DETECTIVE MODE: Read the exact error from the backend
+      const errorData = await res.json();
+
+      // Display what the server actually saw
+      errorBox.innerText = `❌ ${errorData.error}`;
       errorBox.style.display = "block";
     }
   } catch (err) {
