@@ -237,21 +237,27 @@ publicApp.put("/api/orders/:orderId/status", async (req, res) => {
   }
 });
 // ==========================================
-/// ✅ BACKEND: Admin Login Route
+
+//Replacing the admin routes with the new ones that include authentication and order management
+
 app.post("/api/admin-login", (req, res) => {
-  // 1. Grab the exact text sent from the frontend
   const { username, password } = req.body;
 
-  // 2. Check if it matches exactly
+  // PRINT TO RENDER LOGS SO WE CAN SEE IT:
+  console.log(
+    `DETECTIVE MODE - Server received Username: '${username}', Password: '${password}'`,
+  );
+
   if (username === "admin" && password === "admin123") {
-    // 3. If yes, create the secure token
     const token = jwt.sign({ username }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
     res.json({ token, message: "Welcome Admin" });
   } else {
-    // 4. If no, reject them (this is your 401 error!)
-    res.status(401).json({ error: "Incorrect username or password." });
+    // SEND EXACT REASON TO FRONTEND:
+    res.status(401).json({
+      error: `Server saw username: '${username}' and password: '${password}' but they didn't match!`,
+    });
   }
 });
 
