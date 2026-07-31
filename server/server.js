@@ -6,7 +6,7 @@ const path = require("path");
 const jwt = require("jsonwebtoken");
 const { JWT } = require("google-auth-library");
 
-const creds = require("./google-credentials.json");
+const creds = require("../google-credentials.json");
 const JWT_SECRET = process.env.JWT_SECRET;
 const SHEET_ID = "18-PTcIatcmv0wIsXGBYkF5zM27LBNnMAnx2FEkOtDIU";
 
