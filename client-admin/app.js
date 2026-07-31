@@ -32,8 +32,7 @@ async function handleLogin(e) {
 
   try {
     const res = await fetch(`${ADMIN_API}/admin-login`, {
-      // 👈 CHANGED to /admin-login
-      method: "POST",
+      method: "POST", // 👈 THIS WAS MISSING!
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
@@ -49,7 +48,8 @@ async function handleLogin(e) {
       errorBox.style.display = "block";
     }
   } catch (err) {
-    errorBox.innerText = "⚠️ Server unreachable on Port 4000.";
+    // Updated error message since we are no longer using port 4000
+    errorBox.innerText = "⚠️ Server unreachable. Is the Render backend live?";
     errorBox.style.display = "block";
   }
 }

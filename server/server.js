@@ -237,21 +237,20 @@ publicApp.put("/api/orders/:orderId/status", async (req, res) => {
   }
 });
 // ==========================================
-// ❌ DELETE your old adminApp.listen(4000) or adminApp.listen(process.env.ADMIN_PORT)
-// Put everything on your main 'app' variable instead!
-
-// ✅ NEW ADMIN LOGIN ROUTE (Notice it is app.post, not adminApp, and the link is /api/admin-login)
+/// ✅ BACKEND: Admin Login Route
 app.post("/api/admin-login", (req, res) => {
+  // 1. Grab the exact text sent from the frontend
   const { username, password } = req.body;
 
-  // Replace these with whatever your hardcoded username/password are!
+  // 2. Check if it matches exactly
   if (username === "admin" && password === "admin123") {
-    // Generate token using the secret we just put in Render
+    // 3. If yes, create the secure token
     const token = jwt.sign({ username }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
     res.json({ token, message: "Welcome Admin" });
   } else {
+    // 4. If no, reject them (this is your 401 error!)
     res.status(401).json({ error: "Incorrect username or password." });
   }
 });
