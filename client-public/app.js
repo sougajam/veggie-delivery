@@ -56,7 +56,7 @@ async function fetchProducts() {
   try {
     console.log("Attempting to fetch products...");
     const res = await fetch(
-      "https://veggie-delivery-hpeo.onrender.com/products",
+      "https://veggie-delivery-hpeo.onrender.com/api/products",
     );
 
     const contentType = res.headers.get("content-type");
@@ -193,7 +193,7 @@ async function openProfile() {
   // Fetch the user's latest data from the server
   try {
     const res = await fetch(
-      `https://veggie-delivery-hpeo.onrender.com/profile/${currentUser}`,
+      `https://veggie-delivery-hpeo.onrender.com/api/profile/${currentUser}`,
     );
     if (res.ok) {
       const data = await res.json();
@@ -280,11 +280,14 @@ async function handleLogin(e) {
   btn.innerText = "Signing in...";
 
   try {
-    const res = await fetch("https://veggie-delivery-hpeo.onrender.com/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    const res = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/api/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      },
+    );
 
     if (res.ok) {
       const data = await res.json();
@@ -471,7 +474,7 @@ async function checkout() {
 
   try {
     const res = await fetch(
-      "https://veggie-delivery-hpeo.onrender.com/orders",
+      "https://veggie-delivery-hpeo.onrender.com/api/orders",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -519,7 +522,10 @@ async function fetchUserOrders() {
 
   try {
     const res = await fetch(
-      `https://veggie-delivery-hpeo.onrender.com/user-orders/${currentUser}`,
+      `https://veggie-delivery-hpeo.onrender.com/api/user-orders/${currentUser}`,
+      {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      },
     );
     if (res.ok) {
       const orders = await res.json();
