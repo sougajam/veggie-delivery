@@ -237,20 +237,28 @@ publicApp.put("/api/orders/:orderId/status", async (req, res) => {
   }
 });
 // ==========================================
-// 🔐 ADMIN APP ROUTES (Port 4000)
-// ==========================================
+// ❌ DELETE your old adminApp.listen(4000) or adminApp.listen(process.env.ADMIN_PORT)
+// Put everything on your main 'app' variable instead!
 
-// Admin Login
-adminApp.post("/api/admin-login", (req, res) => {
+// ✅ NEW ADMIN LOGIN ROUTE (Notice it is app.post, not adminApp, and the link is /api/admin-login)
+app.post("/api/admin-login", (req, res) => {
   const { username, password } = req.body;
-  if (username === "admin" && password === "mysecret123") {
-    const token = jwt.sign({ username: "admin" }, JWT_SECRET, {
+
+  // Replace these with whatever your hardcoded username/password are!
+  if (username === "admin" && password === "admin123") {
+    // Generate token using the secret we just put in Render
+    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
       expiresIn: "2h",
     });
-    res.status(200).json({ message: "Login successful", token });
+    res.json({ token, message: "Welcome Admin" });
   } else {
-    res.status(401).json({ error: "Unauthorized" });
+    res.status(401).json({ error: "Incorrect username or password." });
   }
+});
+
+// Make sure your OTHER admin routes (like fetching orders) are also on the main 'app'
+app.get("/api/admin-orders", (req, res) => {
+  // ... your existing code to fetch orders for the admin
 });
 
 // ✅ ADD THIS MISSING ROUTE: Check Auth Session

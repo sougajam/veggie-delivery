@@ -31,14 +31,15 @@ async function handleLogin(e) {
   const errorBox = document.getElementById("login-error");
 
   try {
-    const response = await fetch(`${ADMIN_API}/admin-login`, {
+    const res = await fetch(`${ADMIN_API}/admin-login`, {
+      // 👈 CHANGED to /admin-login
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
 
-    if (response.ok) {
-      const data = await response.json();
+    if (res.ok) {
+      const data = await res.json();
       adminToken = data.token;
       localStorage.setItem("adminToken", adminToken);
       errorBox.style.display = "none";
