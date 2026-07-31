@@ -320,7 +320,7 @@ publicApp.delete("/api/products/:id", authenticateToken, async (req, res) => {
   }
 });
 //Verify Your Backend Route
-app.put("/api/orders/:id", authenticateToken, async (req, res) => {
+publicApp.put("/api/orders/:id", authenticateToken, async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
 
