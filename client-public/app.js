@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       try {
         const res = await fetch(
-          "https://veggie-delivery-hpeo.onrender.com/login",
+          "https://veggie-delivery-hpeo.onrender.com/api/login", // 👈 FIX IS HERE,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },
