@@ -319,7 +319,10 @@ publicApp.delete("/api/products/:id", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Failed to delete product." });
   }
 });
-
+// 🛠️ FORCE FALLBACK: If someone goes to the root URL, force it to send the client-public index.html file
+publicApp.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client-public/index.html"));
+});
 // ==========================================
 // 🟢 START SERVER
 // ==========================================
