@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshCart - Enterprise Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- ========================================== -->
+    <!-- SCREEN 1: LOGIN BOX -->
+    <!-- ========================================== -->
+    <div id="login-screen" class="login-container">
+      <div class="login-card">
+        <div class="brand-header">
+          <span class="brand-icon">🛒</span>
+          <h2>Admin Console</h2>
+          <p>Sign in to access store management</p>
+        </div>
+        <form id="admin-login-form">
+          <div class="form-group">
+            <label for="admin-username">Username</label>
+            <input
+              type="text"
+              id="admin-username"
+              placeholder="Enter admin username"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="admin-pass">Password</label>
+            <input
+              type="password"
+              id="admin-pass"
+              placeholder="Enter password"
+              required
+            />
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">
+            Sign In
+          </button>
+        </form>
+        <div id="login-error" class="error-alert" style="display: none"></div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- SCREEN 2: MAIN DASHBOARD -->
+    <!-- ========================================== -->
+    <div id="dashboard-screen" class="dashboard-layout" style="display: none">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <span class="brand-icon">🛒</span> FreshCart
+          <span class="badge">Admin</span>
+        </div>
+        <nav class="sidebar-nav">
+          <a
+            href="#"
+            id="nav-products"
+            class="nav-item active"
+            onclick="switchTab('products')"
+            >📊 Products Dashboard</a
+          >
+          <a
+            href="#"
+            id="nav-orders"
+            class="nav-item"
+            onclick="switchTab('orders')"
+            >📦 Recent Orders</a
+          >
+          <a href="#" class="nav-item disabled">👥 Customers (Soon)</a>
+        </nav>
+        <div class="sidebar-footer">
+          <div class="admin-profile">
+            <div class="avatar">A</div>
+            <div class="info">
+              <strong>Administrator</strong>
+              <small>Port 4000 Session</small>
+            </div>
+          </div>
+          <button onclick="logoutAdmin()" class="btn btn-logout">Logout</button>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT WRAPPER -->
+      <main
+        class="main-content"
+        style="padding: 20px; width: 100%; overflow-y: auto"
+      >
+        <!-- ========================================== -->
+        <!-- 📦 TAB 1: PRODUCTS (Visible by default) -->
+        <!-- ========================================== -->
+        <div id="products-tab">
+          <header class="top-header">
+            <h1>Product Inventory</h1>
+            <button onclick="openProductModal()" class="btn btn-success">
+              + Add New Product
+            </button>
+          </header>
+
+          <!-- ANALYTICS CARDS -->
+          <section class="metrics-grid">
+            <div class="metric-card">
+              <span class="metric-title">Total Products</span>
+              <h2 id="total-products-count">0</h2>
+            </div>
+            <div class="metric-card">
+              <span class="metric-title">Categories</span>
+              <h2 id="total-categories-count">0</h2>
+            </div>
+            <div class="metric-card">
+              <span class="metric-title">System Status</span>
+              <h2 class="status-online">● Online</h2>
+            </div>
+          </section>
+
+          <!-- PRODUCTS DATA TABLE -->
+          <section class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="admin-product-rows">
+                <!-- Dynamic JavaScript Rows Go Here -->
+              </tbody>
+            </table>
+          </section>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- 📦 TAB 2: ORDERS (Hidden by default) -->
+        <!-- ========================================== -->
+        <div id="orders-tab" style="display: none">
+          <header class="top-header" style="margin-bottom: 20px">
+            <h1>Recent Orders</h1>
+            <button class="btn btn-primary" onclick="fetchAdminOrders()">
+              🔄 Refresh Orders
+            </button>
+          </header>
+
+          <!-- ORDERS DATA TABLE -->
+          <section class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Date</th>
+                  <th>Customer</th>
+                  <th>Items Purchased</th>
+                  <th>Total (₹)</th>
+                </tr>
+              </thead>
+              <tbody id="orders-table-body">
+                <!-- Orders will load here -->
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- PRODUCT MODAL (Add / Edit) -->
+    <!-- ========================================== -->
+    <div id="product-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 id="modal-title">Add New Product</h3>
+          <span class="close-btn" onclick="closeProductModal()">&times;</span>
+        </div>
+        <form id="product-form">
+          <div class="form-group">
+            <label>Product Name</label>
+            <input
+              type="text"
+              id="prod-name"
+              placeholder="e.g. Organic Tomatoes"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="prod-category" required>
+              <option value="Vegetables">Vegetables</option>
+              <option value="Fruits">Fruits</option>
+              <option value="Drinks">Drinks</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Price (₹)</label>
+            <input
+              type="number"
+              id="prod-price"
+              step="0.01"
+              placeholder="40.00"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label>Image URL</label>
+            <input
+              type="url"
+              id="prod-image"
+              placeholder="https://images.unsplash.com/..."
+              required
+            />
+          </div>
+          <div class="modal-actions">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              onclick="closeProductModal()"
+            >
+              Cancel
+            </button>
+            <button type="submit" id="save-prod-btn" class="btn btn-primary">
+              Save Product
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

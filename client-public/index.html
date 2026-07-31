@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FreshCart - Earth's Biggest Grocery Store</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- MAIN NAV BAR -->
+    <header class="amazon-nav">
+      <div class="nav-left">
+        <h2 class="logo">🛒 FreshCart</h2>
+      </div>
+
+      <div class="nav-fill">
+        <div class="search-box">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Search for groceries, fruits, and more..."
+          />
+          <button id="search-btn">🔍</button>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div
+          class="account-link"
+          id="account-btn"
+          onclick="toggleCustomerLogin()"
+        >
+          <span class="nav-line-1">Hello, Sign in</span>
+          <span class="nav-line-2">Account &amp; Lists</span>
+        </div>
+
+        <div class="cart-link" onclick="toggleCart()">
+          <span class="cart-count" id="cart-count">0</span>
+          <span class="cart-text">Cart</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- SUB NAV (CATEGORIES) -->
+    <nav class="sub-nav">
+      <button class="category-btn active" onclick="filterCategory('All')">
+        All
+      </button>
+      <button class="category-btn" onclick="filterCategory('Vegetables')">
+        Vegetables
+      </button>
+      <button class="category-btn" onclick="filterCategory('Fruits')">
+        Fruits
+      </button>
+      <button class="category-btn" onclick="filterCategory('Drinks')">
+        Drinks
+      </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="hero-banner">
+        <h2>Fresh groceries delivered to your door.</h2>
+        <p>Shop our everyday low prices.</p>
+      </div>
+
+      <!-- PRODUCTS GRID -->
+      <div id="product-container" class="product-grid">
+        <!-- Products load here via JS -->
+      </div>
+    </main>
+
+    <!-- CUSTOMER LOGIN MODAL -->
+    <div id="login-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <span class="close-btn" onclick="toggleCustomerLogin()">&times;</span>
+        <h2 style="margin-bottom: 20px">Sign In</h2>
+
+        <form id="customer-login-form" onsubmit="handleLogin(event)">
+          <label>Username</label>
+          <input type="text" id="login-username" required />
+          <label>Password</label>
+          <input type="password" id="login-password" required />
+          <button type="submit" class="amazon-btn">Continue</button>
+        </form>
+
+        <hr style="margin: 20px 0; border: 0.5px solid #ddd" />
+        <p style="font-size: 0.9rem; text-align: center; color: #767676">
+          New to FreshCart?
+        </p>
+        <button
+          type="button"
+          onclick="switchToRegister()"
+          class="amazon-btn-secondary"
+          style="margin-top: 10px"
+        >
+          Create your account
+        </button>
+      </div>
+    </div>
+
+    <!-- CUSTOMER REGISTER MODAL -->
+    <div id="register-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <span class="close-btn" onclick="toggleRegister()">&times;</span>
+        <h2 style="margin-bottom: 20px">Create Account</h2>
+
+        <form id="customer-register-form" onsubmit="handleRegister(event)">
+          <label>Choose a Username</label>
+          <input
+            type="text"
+            id="reg-username"
+            placeholder="e.g., shopper123"
+            required
+          />
+
+          <label>Phone Number</label>
+          <input
+            type="tel"
+            id="reg-phone"
+            placeholder="10-digit mobile number"
+            required
+          />
+
+          <label>Delivery Address</label>
+          <textarea
+            id="reg-address"
+            placeholder="Full delivery address (Required)"
+            rows="2"
+            required
+          ></textarea>
+
+          <label>GPS Location (Required for Delivery)</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 15px">
+            <input
+              type="text"
+              id="reg-gps"
+              placeholder="Click button to fetch ->"
+              readonly
+              required
+              style="flex-grow: 1; margin-bottom: 0; background-color: #f3f3f3"
+            />
+            <button
+              type="button"
+              class="amazon-btn-secondary"
+              onclick="fetchGPS()"
+              style="margin-bottom: 0; white-space: nowrap"
+            >
+              📍 Get GPS
+            </button>
+          </div>
+
+          <label>Create a Password</label>
+          <input
+            type="password"
+            id="reg-password"
+            placeholder="At least 6 characters"
+            required
+          />
+
+          <button type="submit" class="amazon-btn">
+            Create your FreshCart account
+          </button>
+        </form>
+
+        <hr style="margin: 20px 0; border: 0.5px solid #ddd" />
+        <p style="font-size: 0.9rem; text-align: center; color: #767676">
+          Already have an account?
+        </p>
+        <button
+          type="button"
+          onclick="switchToLogin()"
+          class="amazon-btn-secondary"
+          style="margin-top: 10px"
+        >
+          Sign in
+        </button>
+      </div>
+    </div>
+    <!-- CUSTOMER PROFILE MODAL -->
+    <div id="profile-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <span class="close-btn" onclick="toggleProfile()">&times;</span>
+        <h2 style="margin-bottom: 20px">My Profile</h2>
+
+        <form id="customer-profile-form" onsubmit="handleProfileUpdate(event)">
+          <label>Phone Number</label>
+          <input type="tel" id="prof-phone" required />
+
+          <label>Delivery Address</label>
+          <textarea id="prof-address" rows="2" required></textarea>
+
+          <label>GPS Location</label>
+          <div style="display: flex; gap: 10px; margin-bottom: 15px">
+            <input
+              type="text"
+              id="prof-gps"
+              readonly
+              required
+              style="flex-grow: 1; margin-bottom: 0; background-color: #f3f3f3"
+            />
+            <button
+              type="button"
+              class="amazon-btn-secondary"
+              onclick="fetchProfileGPS()"
+              style="margin-bottom: 0; white-space: nowrap"
+            >
+              📍 Update GPS
+            </button>
+          </div>
+
+          <button type="submit" class="amazon-btn">Save Changes</button>
+        </form>
+        <hr style="margin: 20px 0; border: 0.5px solid #ddd" />
+
+        <!-- 🆕 Added My Orders Button -->
+        <button
+          type="button"
+          onclick="openMyOrders()"
+          class="amazon-btn"
+          style="margin-bottom: 10px"
+        >
+          📦 View My Orders
+        </button>
+
+        <hr style="margin: 20px 0; border: 0.5px solid #ddd" />
+        <button
+          type="button"
+          onclick="logoutCustomer()"
+          class="amazon-btn-secondary"
+          style="color: #d9534f; border-color: #d9534f"
+        >
+          Sign Out
+        </button>
+      </div>
+    </div>
+
+    <!-- MY ORDERS HISTORY MODAL -->
+    <div id="my-orders-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card" style="max-width: 600px; width: 90%">
+        <span class="close-btn" onclick="closeMyOrders()">&times;</span>
+        <h2 style="margin-bottom: 20px">Order History</h2>
+
+        <div
+          id="user-orders-list"
+          style="max-height: 400px; overflow-y: auto; padding-right: 10px"
+        >
+          <!-- Orders will dynamically load here -->
+        </div>
+      </div>
+    </div>
+    <!-- CART MODAL -->
+    <div id="cart-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card cart-modal-card">
+        <span class="close-btn" onclick="toggleCart()">&times;</span>
+        <h2>Shopping Cart</h2>
+        <hr style="margin: 10px 0" />
+        <div id="cart-items">
+          <!-- Cart items load here -->
+        </div>
+        <div class="cart-footer">
+          <h3>Subtotal: ₹<span id="cart-total-price">0.00</span></h3>
+          <button
+            class="amazon-btn"
+            style="margin-top: 15px"
+            onclick="checkout()"
+          >
+            Proceed to Checkout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>

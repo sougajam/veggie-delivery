@@ -1,0 +1,13 @@
+# Node Modules (Too heavy to upload)
+node_modules/
+
+# Environment Variables (Contains your passwords)
+.env
+
+# Google Sheets Service Account Key (CRITICAL SECURITY)
+*.json
+!package.json
+!package-lock.json
+
+# System Files
+.DS_Store
