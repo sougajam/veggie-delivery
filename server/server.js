@@ -353,10 +353,11 @@ adminApp.delete("/api/products/:id", authenticateToken, async (req, res) => {
 // ==========================================
 // START BOTH SERVERS
 // ==========================================
-publicApp.listen(3000, "127.0.0.1", () => {
-  console.log(`🌐 Public Store running on http://127.0.0.1:3000`);
-});
+// Combine Admin and Public apps into one cloud instance
+publicApp.use(adminApp);
 
-adminApp.listen(4000, "127.0.0.1", () => {
-  console.log(`🔐 Admin Panel running on http://127.0.0.1:4000`);
+// Render will inject a PORT, otherwise fallback to 3000
+const PORT = process.env.PORT || 3000;
+publicApp.listen(PORT, () => {
+  console.log(`Server running live on port ${PORT}`);
 });
