@@ -1,4 +1,4 @@
-const ADMIN_API = "http://127.0.0.1:4000/api";
+const ADMIN_API = "https://veggie-delivery-hpeo.onrender.com/api";
 
 let adminToken = localStorage.getItem("adminToken");
 let allProducts = [];
@@ -125,7 +125,9 @@ window.switchTab = function (tabName) {
 async function fetchAdminProducts() {
   try {
     // Fetch products via public route or dedicated endpoint
-    const response = await fetch("http://127.0.0.1:3000/api/products");
+    const response = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/api/products",
+    );
     allProducts = await response.json();
 
     renderMetrics();
@@ -270,9 +272,12 @@ async function fetchAdminOrders() {
   if (!adminToken) return;
 
   try {
-    const res = await fetch("http://127.0.0.1:4000/api/orders", {
-      headers: { Authorization: `Bearer ${adminToken}` },
-    });
+    const res = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/api/orders",
+      {
+        headers: { Authorization: `Bearer ${adminToken}` },
+      },
+    );
 
     if (res.ok) {
       const orders = await res.json();

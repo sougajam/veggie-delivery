@@ -24,11 +24,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("login-password").value;
 
       try {
-        const res = await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username, password }),
-        });
+        const res = await fetch(
+          "https://veggie-delivery-hpeo.onrender.com/login",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password }),
+          },
+        );
 
         if (res.ok) {
           const data = await res.json();
@@ -52,7 +55,9 @@ document.addEventListener("DOMContentLoaded", () => {
 async function fetchProducts() {
   try {
     console.log("Attempting to fetch products...");
-    const res = await fetch("/api/products");
+    const res = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/products",
+    );
 
     const contentType = res.headers.get("content-type");
     if (!contentType || !contentType.includes("application/json")) {
@@ -187,7 +192,9 @@ async function openProfile() {
 
   // Fetch the user's latest data from the server
   try {
-    const res = await fetch(`/api/profile/${currentUser}`);
+    const res = await fetch(
+      `https://veggie-delivery-hpeo.onrender.com/profile/${currentUser}`,
+    );
     if (res.ok) {
       const data = await res.json();
       document.getElementById("prof-phone").value = data.phone || "";
@@ -229,11 +236,14 @@ async function handleProfileUpdate(e) {
   btn.innerText = "Saving...";
 
   try {
-    const res = await fetch(`/api/profile/${currentUser}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, address, gps }),
-    });
+    const res = await fetch(
+      `https://veggie-delivery-hpeo.onrender.com/profile/${currentUser}`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, address, gps }),
+      },
+    );
 
     if (res.ok) {
       alert("✅ Profile updated successfully!");
@@ -270,7 +280,7 @@ async function handleLogin(e) {
   btn.innerText = "Signing in...";
 
   try {
-    const res = await fetch("/api/login", {
+    const res = await fetch("https://veggie-delivery-hpeo.onrender.com/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -344,11 +354,14 @@ async function handleRegister(e) {
   btn.innerText = "Creating account...";
 
   try {
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, phone, address, gps, password }), // 🆕 Send GPS
-    });
+    const res = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/register",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, phone, address, gps, password }), // 🆕 Send GPS
+      },
+    );
 
     if (res.ok) {
       currentUser = username;
@@ -457,15 +470,18 @@ async function checkout() {
   checkoutBtn.disabled = true;
 
   try {
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        customer: currentUser,
-        items: cart,
-        total: total,
-      }),
-    });
+    const res = await fetch(
+      "https://veggie-delivery-hpeo.onrender.com/orders",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: currentUser,
+          items: cart,
+          total: total,
+        }),
+      },
+    );
 
     if (res.ok) {
       alert("✅ Order placed successfully! Your groceries are on the way.");
@@ -502,7 +518,9 @@ async function fetchUserOrders() {
     "<p style='text-align:center;'>Loading your orders...</p>";
 
   try {
-    const res = await fetch(`/api/user-orders/${currentUser}`);
+    const res = await fetch(
+      `https://veggie-delivery-hpeo.onrender.com/user-orders/${currentUser}`,
+    );
     if (res.ok) {
       const orders = await res.json();
       container.innerHTML = "";
@@ -563,11 +581,14 @@ async function updateOrderStatus(orderId, newStatus) {
     return;
 
   try {
-    const res = await fetch(`/api/orders/${orderId}/status`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ status: newStatus }),
-    });
+    const res = await fetch(
+      `https://veggie-delivery-hpeo.onrender.com/orders/${orderId}/status`,
+      {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: newStatus }),
+      },
+    );
 
     if (res.ok) {
       fetchUserOrders(); // Instantly refresh the UI
