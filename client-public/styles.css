@@ -1,3 +1,6 @@
+/* ==========================================
+   GLOBAL RESET & BASE
+   ========================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -7,35 +10,42 @@
 body {
   background-color: #eaeded;
   color: #0f1111;
+  overflow-x: hidden; /* Prevents side-scrolling on mobile */
 }
 
-/* --- AMAZON NAV BAR --- */
+/* ==========================================
+   AMAZON NAV BAR (RESPONSIVE)
+   ========================================== */
 .amazon-nav {
   background-color: #131921;
   color: white;
   display: flex;
   align-items: center;
-  padding: 10px 20px;
-  height: 60px;
-}
-.logo {
-  color: white;
-  margin-right: 20px;
-  font-size: 1.4rem;
+  flex-wrap: wrap; /* Allows search bar to drop down on mobile */
+  padding: 10px 15px;
+  min-height: 60px;
+  gap: 10px;
 }
 
+.logo {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+/* SEARCH BOX */
 .nav-fill {
-  flex: 1;
+  flex: 1 1 100%; /* Forces search bar to full width on mobile */
+  order: 3; /* Puts search bar on the bottom row on mobile */
   display: flex;
   align-items: center;
-  margin: 0 15px;
-  max-width: 700px;
+  border-radius: 4px;
+  overflow: hidden;
 }
 .search-box {
   display: flex;
   width: 100%;
-  border-radius: 4px;
-  overflow: hidden;
 }
 .search-box input {
   flex: 1;
@@ -56,25 +66,22 @@ body {
   background-color: #f3a847;
 }
 
-/* =========================
-   Right Navigation
-========================= */
+/* RIGHT NAVIGATION (Account & Cart) */
 .nav-right {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 10px;
+  order: 2; /* Keeps it next to the logo on mobile */
+  margin-left: auto; /* Pushes to the far right */
 }
 
-/* =========================
-   Account
-========================= */
 .nav-link {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  padding: 8px 10px;
-  min-height: 48px;
+  padding: 5px;
+  min-height: 40px;
   line-height: 1.2;
   cursor: pointer;
   color: #fff;
@@ -82,18 +89,15 @@ body {
   border-radius: 3px;
   transition: 0.25s;
 }
-
 .nav-link:hover {
   border-color: #fff;
 }
-
 .nav-link small {
   display: block;
   font-size: 12px;
   color: #ddd;
   margin-bottom: 2px;
 }
-
 .nav-link strong {
   display: block;
   font-size: 14px;
@@ -101,42 +105,76 @@ body {
   color: #fff;
 }
 
-/* =========================
-   Cart
-========================= */
+/* CART LINK */
 .cart-link {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
-  padding: 8px 10px;
+  gap: 4px;
+  padding: 5px;
   cursor: pointer;
   color: #fff;
   border: 1px solid transparent;
   border-radius: 3px;
   transition: 0.25s;
 }
-
 .cart-link:hover {
   border-color: #fff;
 }
-
 .cart-count {
   color: #f08804;
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 700;
 }
-
 .cart-link span:last-child {
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
+  display: none; /* Hide the word 'Cart' on mobile to save space */
 }
 
-/* --- SUB NAV --- */
+/* ==========================================
+   DESKTOP NAVBAR OVERRIDES
+   ========================================== */
+@media (min-width: 768px) {
+  .amazon-nav {
+    flex-wrap: nowrap; /* Keeps everything on one line */
+    padding: 10px 20px;
+  }
+  .nav-fill {
+    flex: 1;
+    order: 2; /* Puts search bar in the middle */
+    margin: 0 15px;
+    max-width: 700px;
+  }
+  .nav-right {
+    order: 3; /* Puts account/cart on the right */
+    gap: 24px;
+  }
+  .nav-link {
+    padding: 8px 10px;
+  }
+  .cart-link {
+    padding: 8px 10px;
+  }
+  .cart-link span:last-child {
+    display: inline; /* Bring the word 'Cart' back on Desktop */
+  }
+}
+
+/* ==========================================
+   SUB NAV (CATEGORIES)
+   ========================================== */
 .sub-nav {
   background-color: #232f3e;
-  padding: 8px 20px;
+  padding: 8px 15px;
   display: flex;
   gap: 15px;
+  overflow-x: auto; /* Allows horizontal swiping on mobile */
+  white-space: nowrap; /* Keeps buttons in a single line */
+  -webkit-overflow-scrolling: touch;
+}
+/* Hide the ugly scrollbar but keep the swipe functionality */
+.sub-nav::-webkit-scrollbar {
+  display: none;
 }
 .category-btn {
   background: none;
@@ -155,81 +193,104 @@ body {
   border-bottom: 2px solid #febd69;
 }
 
-/* --- MAIN CONTENT --- */
+/* ==========================================
+   MAIN CONTENT & PRODUCT GRID
+   ========================================== */
 .main-content {
   max-width: 1500px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 15px;
 }
 .hero-banner {
   background: linear-gradient(to right, #84d8e3, #e5f8f9);
-  padding: 40px 20px;
+  padding: 30px 15px;
   text-align: center;
   margin-bottom: 20px;
   border-radius: 4px;
 }
 
+/* SMART GRID: 2 columns on mobile, adapts up to 5 on desktop */
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 15px;
 }
+@media (min-width: 768px) {
+  .product-grid {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 20px;
+  }
+  .main-content {
+    padding: 20px;
+  }
+}
+
 .product-card {
   background: white;
-  padding: 20px;
+  padding: 15px;
   border-radius: 4px;
   text-align: center;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 .product-card img {
   width: 100%;
-  height: 200px;
+  height: 140px; /* Smaller images on mobile */
   object-fit: contain;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
+@media (min-width: 768px) {
+  .product-card img {
+    height: 200px; /* Larger images on desktop */
+  }
+}
+
 .product-card h3 {
   font-size: 1rem;
   font-weight: 400;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   color: #007185;
 }
 .price {
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: bold;
   color: #0f1111;
   margin-bottom: 15px;
 }
 
-/* --- BUTTONS --- */
-.amazon-btn {
+/* ==========================================
+   BUTTONS
+   ========================================== */
+.amazon-btn,
+.amazon-btn-secondary {
   width: 100%;
-  background: #ffd814;
-  border: 1px solid #fcd200;
   border-radius: 100px;
-  padding: 10px;
+  padding: 12px 10px; /* Thicker padding for easier mobile tapping */
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   transition: 0.2s;
   box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
+}
+.amazon-btn {
+  background: #ffd814;
+  border: 1px solid #fcd200;
 }
 .amazon-btn:hover {
   background: #f7ca00;
 }
 .amazon-btn-secondary {
-  width: 100%;
   background: #fff;
   border: 1px solid #d5d9d9;
-  border-radius: 100px;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  box-shadow: 0 2px 5px rgba(213, 217, 217, 0.5);
 }
 .amazon-btn-secondary:hover {
   background: #f7fafa;
 }
 
-/* --- MODALS --- */
+/* ==========================================
+   MODALS (POP-UPS)
+   ========================================== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -241,25 +302,31 @@ body {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  padding: 15px; /* Keeps modal off the absolute edge of mobile screens */
 }
+
 .modal-card {
   background: white;
-  padding: 30px;
+  padding: 25px;
   border-radius: 8px;
-  width: 90%;
+  width: 100%;
   max-width: 400px;
   position: relative;
+  max-height: 90vh; /* Prevents modal from being taller than the screen */
+  overflow-y: auto; /* Adds a scrollbar INSIDE the modal if it gets too tall */
 }
 .cart-modal-card {
   max-width: 500px;
 }
 .close-btn {
   position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 1.5rem;
+  top: 10px;
+  right: 15px;
+  font-size: 1.8rem;
   cursor: pointer;
   color: #555;
+  background: none;
+  border: none;
 }
 
 form label {
@@ -270,7 +337,7 @@ form label {
 }
 form input {
   width: 100%;
-  padding: 8px;
+  padding: 12px 10px; /* Bigger inputs for mobile keyboards */
   border: 1px solid #a6a6a6;
   border-radius: 3px;
   margin-bottom: 15px;
