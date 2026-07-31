@@ -319,6 +319,16 @@ publicApp.delete("/api/products/:id", authenticateToken, async (req, res) => {
     res.status(500).json({ error: "Failed to delete product." });
   }
 });
+//Verify Your Backend Route
+app.put("/api/orders/:id", authenticateToken, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  // Logic to find the row in Google Sheets by ID and update the status column to "Cancelled"
+  // ...
+
+  res.json({ message: "Order updated successfully" });
+});
 // 🛠️ FORCE FALLBACK: If someone goes to the root URL, force it to send the client-public index.html file
 publicApp.get(/(.*)/, (req, res) => {
   res.sendFile(path.join(__dirname, "../client-public/index.html"));

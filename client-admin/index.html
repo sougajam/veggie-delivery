@@ -231,7 +231,106 @@
         </form>
       </div>
     </div>
+    <!-- 📦 ORDER DETAILS & CANCEL MODAL -->
+    <div id="order-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+        <h2 style="margin-bottom: 15px">Order Details</h2>
 
+        <div
+          id="order-user-info"
+          style="
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+          "
+        >
+          <!-- JavaScript will inject customer details here -->
+        </div>
+
+        <h4 style="margin-bottom: 10px">Items Ordered:</h4>
+        <ul
+          id="order-items-list"
+          style="margin-bottom: 15px; padding-left: 20px"
+        >
+          <!-- JavaScript will inject the grocery list here -->
+        </ul>
+
+        <h3
+          id="order-total-cost"
+          style="margin-bottom: 20px; color: #b12704"
+        ></h3>
+
+        <!-- The Cancel Button -->
+        <button
+          id="cancel-order-btn"
+          style="
+            width: 100%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+          "
+        >
+          Cancel Order
+        </button>
+      </div>
+    </div>
+    <!-- 📦 ORDER DETAILS & CANCEL MODAL -->
+    <div id="order-modal" class="modal-overlay" style="display: none">
+      <div class="modal-card">
+        <button class="close-btn" onclick="closeOrderModal()">&times;</button>
+        <h2 style="margin-bottom: 15px">Order Details</h2>
+
+        <div
+          id="order-user-info"
+          style="
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+          "
+        >
+          <!-- JavaScript will inject customer details here -->
+        </div>
+
+        <h4 style="margin-bottom: 10px">Items Ordered:</h4>
+        <ul
+          id="order-items-list"
+          style="margin-bottom: 15px; padding-left: 20px"
+        >
+          <!-- JavaScript will inject the grocery list here -->
+        </ul>
+
+        <h3
+          id="order-total-cost"
+          style="margin-bottom: 20px; color: #b12704"
+        ></h3>
+
+        <!-- The Cancel Button -->
+        <button
+          id="cancel-order-btn"
+          style="
+            width: 100%;
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+          "
+        >
+          Cancel Order
+        </button>
+      </div>
+    </div>
     <script src="app.js"></script>
   </body>
 </html>

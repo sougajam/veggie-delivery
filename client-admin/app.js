@@ -316,3 +316,119 @@ async function fetchAdminOrders() {
     console.error("Failed to load orders", err);
   }
 }
+// 1. Create a variable at the top of your file to hold all orders
+let allOrders = [];
+
+// 2. Update your fetchOrders function to save the data
+async function fetchOrders() {
+  try {
+    const res = await fetch(`${API_URL}/orders`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      },
+    });
+    allOrders = await res.json(); // Save to global variable
+    renderOrdersTable(allOrders);
+  } catch (error) {
+    console.error("Failed to load orders", error);
+  }
+}
+
+// 3. Update your table rendering to make rows clickable
+function renderOrdersTable(orders) {
+  const tbody = document.getElementById("orders-tbody"); // Replace with your actual table body ID
+  tbody.innerHTML = "";
+
+  orders.forEach((order) => {
+    const tr = document.createElement("tr");
+    tr.style.cursor = "pointer"; // Makes it look clickable
+
+    // When the row is clicked, open the popup!
+    tr.onclick = () => openOrderModal(order.id);
+
+    tr.innerHTML = `
+      <td>${order.id}</td>
+      <td>${order.name}</td>
+      <td>${order.status}</td>
+      <td>$${order.total}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// 4. Add the Modal Functions
+function openOrderModal(orderId) {
+  // Find the exact order we clicked on
+  const order = allOrders.find((o) => o.id === orderId);
+  if (!order) return;
+
+  // Fill in User Info
+  document.getElementById("order-user-info").innerHTML = `
+    <p><strong>Name:</strong> ${order.name}</p>
+    <p><strong>Phone:</strong> ${order.phone}</p>
+    <p><strong>Address:</strong> ${order.address}</p>
+    <p><strong>Current Status:</strong> 
+      <span style="color: ${order.status === "Cancelled" ? "red" : "green"}">${order.status}</span>
+    </p>
+  `;
+
+  // Fill in Items List (Assuming your items are saved as a JSON string in Google Sheets)
+  let itemsHtml = "";
+  try {
+    const items =
+      typeof order.items === "string" ? JSON.parse(order.items) : order.items;
+    items.forEach((item) => {
+      itemsHtml += `<li style="margin-bottom: 5px;">${item.name} <strong>(x${item.quantity})</strong> - $${item.price}</li>`;
+    });
+  } catch (e) {
+    itemsHtml = "<li>Could not load item details.</li>";
+  }
+  document.getElementById("order-items-list").innerHTML = itemsHtml;
+
+  // Fill in Total Cost
+  document.getElementById("order-total-cost").innerText =
+    `Total Cost: $${order.total}`;
+
+  // Fix the Cancel Button behavior
+  const cancelBtn = document.getElementById("cancel-order-btn");
+  if (order.status === "Cancelled") {
+    cancelBtn.style.display = "none"; // Hide button if already cancelled
+  } else {
+    cancelBtn.style.display = "block";
+    cancelBtn.onclick = () => cancelOrder(orderId);
+  }
+
+  // Show the modal
+  document.getElementById("order-modal").style.display = "flex";
+}
+
+function closeOrderModal() {
+  document.getElementById("order-modal").style.display = "none";
+}
+
+// 5. Add the Cancel Order API Call
+async function cancelOrder(orderId) {
+  if (!confirm("Are you sure you want to cancel this order?")) return;
+
+  try {
+    const res = await fetch(`${API_URL}/orders/${orderId}`, {
+      method: "PUT", // or PATCH depending on your backend
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+      },
+      body: JSON.stringify({ status: "Cancelled" }), // Sends the status update
+    });
+
+    if (res.ok) {
+      alert("Order cancelled successfully!");
+      closeOrderModal();
+      fetchOrders(); // Refresh the table automatically
+    } else {
+      alert("Failed to cancel order.");
+    }
+  } catch (error) {
+    console.error(error);
+    alert("Error communicating with server.");
+  }
+}
