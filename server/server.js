@@ -15,6 +15,8 @@ const publicApp = express();
 
 publicApp.use(cors());
 publicApp.use(express.json());
+// This tells Render to load your public store website!
+publicApp.use(express.static(path.join(__dirname, "../client-public")));
 
 // Connect to Google Sheets
 const serviceAccountAuth = new JWT({
@@ -52,11 +54,9 @@ publicApp.post("/api/admin-login", (req, res) => {
     const token = jwt.sign({ username }, JWT_SECRET, { expiresIn: "2h" });
     res.json({ token, message: "Welcome Admin" });
   } else {
-    res
-      .status(401)
-      .json({
-        error: `Server saw username: '${username}' and password: '${password}' but they didn't match!`,
-      });
+    res.status(401).json({
+      error: `Server saw username: '${username}' and password: '${password}' but they didn't match!`,
+    });
   }
 });
 
