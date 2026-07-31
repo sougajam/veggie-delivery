@@ -237,7 +237,7 @@ async function handleProfileUpdate(e) {
 
   try {
     const res = await fetch(
-      `https://veggie-delivery-hpeo.onrender.com/profile/${currentUser}`,
+      `https://veggie-delivery-hpeo.onrender.com/api/profile/${currentUser}`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -358,7 +358,7 @@ async function handleRegister(e) {
 
   try {
     const res = await fetch(
-      "https://veggie-delivery-hpeo.onrender.com/register",
+      "https://veggie-delivery-hpeo.onrender.com/api/register",
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -588,7 +588,7 @@ async function updateOrderStatus(orderId, newStatus) {
 
   try {
     const res = await fetch(
-      `https://veggie-delivery-hpeo.onrender.com/orders/${orderId}/status`,
+      `https://veggie-delivery-hpeo.onrender.com/api/orders/${orderId}/status`,
       {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
