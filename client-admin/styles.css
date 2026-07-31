@@ -187,12 +187,9 @@ body {
 }
 
 .sidebar-footer {
-  position: fixed; /* 📌 Locks it to the screen */
-  top: 0; /* Pins it to the top */
-  left: 0; /* Pins it to the left edge */
-  height: 100vh; /* Makes it take up 100% of the screen height */
-  width: 250px; /* Set this to whatever width your sidebar currently is */
-  overflow-y: auto;
+  position: fixed;
+  border-top: 1px solid #1e293b;
+  padding-top: 16px;
 }
 
 .admin-profile {
